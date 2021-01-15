@@ -1,0 +1,11 @@
+host: go.example.com
+
+paths:
+  /mycoolproject:
+    repo: https://github.com/user/mycoolproject
+    packages:
+      - pkg/package1
+      - pkg/package2
+
+  /myothercoolproject:
+    repo: https://github.com/user/myothercoolproject
