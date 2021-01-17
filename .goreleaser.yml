@@ -1,17 +1,17 @@
-project_name: csvtojson
+project_name: go-vanity-gen
 
 before:
   hooks:
     - go mod download
 
 builds:
-- id: csvtojson
+- id: go-vanity-gen
   env:
     - CGO_ENABLED=0
   ldflags:
-    - -X go.krishnaiyer.dev/csvtojson/cmd.version={{.Version}}
-    - -X go.krishnaiyer.dev/csvtojson/cmd.gitCommit={{.Commit}}
-    - -X go.krishnaiyer.dev/csvtojson/cmd.buildDate={{.Date}}
+    - -X go.krishnaiyer.dev/go-vanity-gen/cmd.version={{.Version}}
+    - -X go.krishnaiyer.dev/go-vanity-gen/cmd.gitCommit={{.Commit}}
+    - -X go.krishnaiyer.dev/go-vanity-gen/cmd.buildDate={{.Date}}
   goos:
     - darwin
     - linux
@@ -28,7 +28,7 @@ builds:
 archives:
 - id: tar
   builds:
-    - csvtojson
+    - go-vanity-gen
   replacements:
     darwin: darwin
     linux: linux
@@ -39,7 +39,7 @@ archives:
   format: tar.gz
 - id: zip
   builds:
-    - csvtojson
+    - go-vanity-gen
   replacements:
     darwin: darwin
     linux: linux
