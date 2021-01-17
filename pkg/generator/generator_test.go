@@ -60,7 +60,7 @@ var indexOut = `
 </html>
 `
 
-var packageTemplate = `
+var projectTemplate = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -111,14 +111,16 @@ func TestGenerate(t *testing.T) {
 	index, err := gen.Index(ctx, indexTemplate)
 	a.So(err, should.BeNil)
 	a.So(string(index), should.Equal, indexOut)
-	vanity, err := gen.Package(ctx, packageTemplate)
+	vanity, err := gen.Project(ctx, projectTemplate)
 	a.So(err, should.BeNil)
 	a.So(len(vanity.items), should.Equal, 2)
 	mcp := vanity.items["/mycoolproject"]
-	a.So(string(mcp.content), should.Equal, mycoolprojectOut)
+	a.So(string(mcp.Content), should.Equal, mycoolprojectOut)
+	a.So(len(mcp.PkgNames), should.Equal, 2)
 	mocp := vanity.items["/myothercoolproject"]
-	a.So(string(mocp.content), should.Equal, myOtherCoolProjectOut)
+	a.So(string(mocp.Content), should.Equal, myOtherCoolProjectOut)
+	a.So(len(mocp.PkgNames), should.Equal, 0)
 	invalid := vanity.items["/mynonexistantproject"]
-	a.So(invalid.content, should.BeNil)
-	a.So(invalid.pkgNames, should.BeNil)
+	a.So(invalid.Content, should.BeNil)
+	a.So(invalid.PkgNames, should.BeNil)
 }

@@ -44,13 +44,18 @@ type Generator struct {
 
 // OutItem is a single output item.
 type OutItem struct {
-	pkgNames []string
-	content  []byte
+	PkgNames []string
+	Content  []byte
 }
 
 // Out is the raw output from the generator.
 type Out struct {
 	items map[string]OutItem
+}
+
+// Items returns the generated output items.
+func (o *Out) Items() map[string]OutItem {
+	return o.items
 }
 
 // config is the vanity config
@@ -129,8 +134,8 @@ func (gen *Generator) Index(ctx context.Context, input string) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// Package generates the index.html for a package path.
-func (gen *Generator) Package(ctx context.Context, input string) (*Out, error) {
+// Project generates the index.html for a project path.
+func (gen *Generator) Project(ctx context.Context, input string) (*Out, error) {
 	out := &Out{
 		items: make(map[string]OutItem, 0),
 	}
@@ -155,14 +160,14 @@ func (gen *Generator) Package(ctx context.Context, input string) (*Out, error) {
 			return nil, err
 		}
 		out.items[path.path] = OutItem{
-			pkgNames: path.packages,
-			content:  buf.Bytes(),
+			PkgNames: path.packages,
+			Content:  buf.Bytes(),
 		}
 	}
 	return out, nil
 }
 
-// Paths generates the index.html for a particular path and it's packages.
-func (gen *Generator) Paths(ctx context.Context, Input []byte) []Path {
+// Paths returns the list of paths extracted from the vanity configuration.
+func (gen *Generator) Paths() []Path {
 	return gen.paths
 }
