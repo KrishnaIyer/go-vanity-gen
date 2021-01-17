@@ -2,6 +2,8 @@
 
 Generates simple html pages for Go Vanity redirection.
 
+![Status Checks](https://github.com/krishnaiyer/go-vanity-gen/workflows/buildandtest/badge.svg)
+
 ## Installation
 
 ```bash
