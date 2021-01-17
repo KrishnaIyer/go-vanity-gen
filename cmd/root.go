@@ -135,7 +135,7 @@ var (
 	}
 )
 
-// Execute ...
+// Execute the root command
 func Execute() {
 	if err := Root.Execute(); err != nil {
 		log.Fatal(err.Error())
