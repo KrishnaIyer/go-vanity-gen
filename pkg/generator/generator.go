@@ -50,12 +50,7 @@ type OutItem struct {
 
 // Out is the raw output from the generator.
 type Out struct {
-	raw map[string]OutItem
-}
-
-// Raw returns the raw generated values.
-func (o *Out) Raw() map[string]OutItem {
-	return o.raw
+	items map[string]OutItem
 }
 
 // config is the vanity config
@@ -137,7 +132,7 @@ func (gen *Generator) Index(ctx context.Context, input string) ([]byte, error) {
 // Package generates the index.html for a package path.
 func (gen *Generator) Package(ctx context.Context, input string) (*Out, error) {
 	out := &Out{
-		raw: make(map[string]OutItem, 0),
+		items: make(map[string]OutItem, 0),
 	}
 	vanity, err := template.New("vanity").Parse(input)
 	if err != nil {
@@ -159,7 +154,7 @@ func (gen *Generator) Package(ctx context.Context, input string) (*Out, error) {
 		}); err != nil {
 			return nil, err
 		}
-		out.raw[path.path] = OutItem{
+		out.items[path.path] = OutItem{
 			pkgNames: path.packages,
 			content:  buf.Bytes(),
 		}

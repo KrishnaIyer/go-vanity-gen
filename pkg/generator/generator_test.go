@@ -16,7 +16,6 @@ package generator
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/smartystreets/assertions"
@@ -49,6 +48,18 @@ var indexTemplate = `
 </html>
 `
 
+var indexOut = `
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Welcome to go.example.com</h1>
+<ul>
+<li><a href="https://pkg.go.dev/go.example.com/mycoolproject">go.example.com/mycoolproject</a></li><li><a href="https://pkg.go.dev/go.example.com/myothercoolproject">go.example.com/myothercoolproject</a></li>
+</ul>
+</body>
+</html>
+`
+
 var packageTemplate = `
 <!DOCTYPE html>
 <html>
@@ -63,16 +74,51 @@ Nothing to see here folks!
 </html>
 `
 
+var mycoolprojectOut = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="go-import" content="go.example.com/mycoolproject git https://github.com/user/mycoolproject">
+<meta name="go-source" content="go.example.com/mycoolproject https://github.com/user/mycoolproject https://github.com/user/mycoolproject/tree/master{/dir} https://github.com/user/mycoolproject/blob/master{/dir}/{file}#L{line}">
+</head>
+<body>
+Nothing to see here folks!
+</body>
+</html>
+`
+
+var myOtherCoolProjectOut = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="go-import" content="go.example.com/myothercoolproject git https://github.com/user/myothercoolproject">
+<meta name="go-source" content="go.example.com/myothercoolproject https://github.com/user/myothercoolproject https://github.com/user/myothercoolproject/tree/master{/dir} https://github.com/user/myothercoolproject/blob/master{/dir}/{file}#L{line}">
+</head>
+<body>
+Nothing to see here folks!
+</body>
+</html>
+`
+
 func TestGenerate(t *testing.T) {
 	a := assertions.New(t)
 	ctx := context.Background()
 	gen, err := New(ctx, vanityCfg)
 	a.So(err, should.BeNil)
+	a.So(len(gen.paths), should.Equal, 2)
 	index, err := gen.Index(ctx, indexTemplate)
 	a.So(err, should.BeNil)
-	fmt.Println(string(index))
+	a.So(string(index), should.Equal, indexOut)
 	vanity, err := gen.Package(ctx, packageTemplate)
 	a.So(err, should.BeNil)
-	mcp := vanity.raw["/mycoolproject"]
-	fmt.Println(string(mcp.content))
+	a.So(len(vanity.items), should.Equal, 2)
+	mcp := vanity.items["/mycoolproject"]
+	a.So(string(mcp.content), should.Equal, mycoolprojectOut)
+	mocp := vanity.items["/myothercoolproject"]
+	a.So(string(mocp.content), should.Equal, myOtherCoolProjectOut)
+	invalid := vanity.items["/mynonexistantproject"]
+	a.So(invalid.content, should.BeNil)
+	a.So(invalid.pkgNames, should.BeNil)
 }
