@@ -134,7 +134,7 @@ func (gen *Generator) Index(ctx context.Context, input string) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// Project generates the index.html for a project path.
+// Project generates the index.html for a project path and returns an Out object.
 func (gen *Generator) Project(ctx context.Context, input string) (*Out, error) {
 	out := &Out{
 		items: make(map[string]OutItem, 0),

@@ -4,7 +4,6 @@ Generates simple html pages for Go Vanity redirection.
 
 ![Status Checks](https://github.com/krishnaiyer/go-vanity-gen/workflows/buildandtest/badge.svg)
 
-![Release](https://github.com/KrishnaIyer/go-vanity-gen/workflows/release/badge.svg)
 
 ## Installation
 
