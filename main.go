@@ -14,6 +14,10 @@
 
 package main
 
-func main() {
+import (
+	"go.krishnaiyer.dev/go-vanity-gen/cmd"
+)
 
+func main() {
+	cmd.Execute()
 }

@@ -2,3 +2,5 @@ main
 .env
 dist/*
 .tmpl
+.DS_Store*
+gen/*
