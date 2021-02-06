@@ -67,18 +67,19 @@ var (
 			if err != nil {
 				panic(err)
 			}
-			if config.OutPath == "" {
-				config.OutPath = "./gen"
-			}
-			if config.Template.Index == "" || config.Template.Project == "" {
-				return errTemplateNotDefined
-			}
 			return nil
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			baseCtx := context.Background()
 			ctx, cancel := context.WithCancel(baseCtx)
 			defer cancel()
+
+			if config.OutPath == "" {
+				config.OutPath = "./gen"
+			}
+			if config.Template.Index == "" || config.Template.Project == "" {
+				log.Fatal(errTemplateNotDefined)
+			}
 
 			input := kv{
 				config.VanityFile:       nil,
@@ -146,6 +147,6 @@ func init() {
 	manager = cfg.New("config", "go-vanity")
 	manager.InitFlags(*config)
 	Root.PersistentFlags().AddFlagSet(manager.Flags())
-	Root.AddCommand(manager.VersionCommand(Root))
+	Root.AddCommand(VersionCommand(Root))
 	Root.AddCommand(manager.ConfigCommand(Root))
 }
