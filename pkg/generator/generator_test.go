@@ -42,7 +42,7 @@ var indexTemplate = `
 <body>
 <h1>Welcome to {{.Host}}</h1>
 <ul>
-{{range .Paths}}<li><a href="https://pkg.go.dev/{{.}}">{{.}}</a></li>{{end}}
+{{range .Vanity}}<li><a href="https://pkg.go.dev/{{.Path}}">{{.Path}}</a></li>{{end}}
 </ul>
 </body>
 </html>

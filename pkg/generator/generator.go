@@ -110,23 +110,29 @@ func New(ctx context.Context, vanity []byte) (*Generator, error) {
 	}, nil
 }
 
+type vanity struct {
+	Path string
+	Repo string
+}
+
 // Index generates the index.html at the root of the assets tree.
 func (gen *Generator) Index(ctx context.Context, input string) ([]byte, error) {
 	index, err := template.New("index").Parse(input)
 	if err != nil {
 		return nil, err
 	}
-	paths := make([]string, len(gen.paths))
+	vanityPaths := make([]vanity, len(gen.paths))
 	for i, h := range gen.paths {
-		paths[i] = gen.host + h.path
+		vanityPaths[i].Path = gen.host + h.path
+		vanityPaths[i].Repo = h.repo
 	}
 	var buf bytes.Buffer
 	if err := index.Execute(&buf, struct {
-		Host  string
-		Paths []string
+		Host   string
+		Vanity []vanity
 	}{
-		Host:  gen.host,
-		Paths: paths,
+		Host:   gen.host,
+		Vanity: vanityPaths,
 	},
 	); err != nil {
 		return nil, err
@@ -151,11 +157,13 @@ func (gen *Generator) Project(ctx context.Context, input string) (*Out, error) {
 			Repo    string
 			Display string
 			VCS     string
+			Host    string
 		}{
 			Import:  gen.host + path.path,
 			Repo:    path.repo,
 			Display: path.display,
 			VCS:     path.vcs,
+			Host:    gen.host,
 		}); err != nil {
 			return nil, err
 		}
