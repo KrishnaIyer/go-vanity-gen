@@ -37,6 +37,11 @@ Use "go-vanity [command] --help" for more information about a command.
 
 ## Usage
 
+1. Install
+```bash
+$ go install go.krishnaiyer.dev/go-vanity-gen
+```
+2. Generate
 ```bash
 $ go-vanity-gen -i sample/index.tmpl -p sample/project.tmpl -f ./vanity.yml
 ```
@@ -72,6 +77,10 @@ $ make clean
 ```bash
 $ go list ./...
 ```
+
+## Releases
+
+Please check the [changelog](./CHANGELOG.md) for release history.
 
 ## License
 
