@@ -11,6 +11,12 @@ This file contains a list of changes per version.
  
 ### Fixed
  
+## [1.0.2] - 2022-08-08
+
+### Changed
+
+- Updated modules. No functional changes.
+
 ## [1.0.1] - 2021-02-06
 
 ### Added
